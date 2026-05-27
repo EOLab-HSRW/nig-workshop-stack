@@ -96,3 +96,7 @@ password: USER_PASSWORD
 - The current `inventory.csv` is just a place holder and we roll-up new info per workshop-basis.
 - Do not commit `instances/`.
 - Use `./deploy.sh up` instead of running `docker compose` directly, because the script generates the Node-RED password hash.
+
+## Acknowledgement
+
+This repo mirrors the stack and workflow by [Jan](https://github.com/orgs/EOLab-HSRW/people/SirSundays) in [Aufbau & Installation - EOLab Wiki](https://wiki.eolab.de/doku.php?id=user:jan001:nigdocu:aufbau).
