@@ -2,6 +2,12 @@
 
 Automation scripts to deploy multiple NIG workshop instances with Docker Compose.
 
+> [!WARNING]
+> **Workshop / Local Use Only**
+>
+> This stack is intended for experimental local workshop deployments only.
+> It is provided **AS-IS** and by no means should be used in production environments without a full security review, hardening, and operational validation.
+
 Each user gets a separate stack with:
 
 - [Node-RED](https://nodered.org/)
