@@ -27,6 +27,7 @@ Environment overrides:
   INSTANCES_DIR=instances
   COMPOSE_FILE=compose.yml
   BCRYPT_ROUNDS=8
+  KEEP_VOLUMES=0   For "down": 0 removes named volumes; 1 keeps them
 EOF
 }
 
@@ -37,6 +38,21 @@ require_command() {
   fi
 }
 
+keep_volumes_enabled() {
+  case "${KEEP_VOLUMES:-0}" in
+    1)
+      return 0
++      ;;
+    0)
+      return 1
+      ;;
+    *)
+      echo "Invalid KEEP_VOLUMES value: ${KEEP_VOLUMES}" >&2
+      echo "Use KEEP_VOLUMES=1 to keep volumes or KEEP_VOLUMES=0 to remove them." >&2
+      exit 2
+      ;;
+  esac
+}
 
 get_env_value() {
   local env_file="$1"
@@ -265,7 +281,11 @@ main() {
       compose_for_instances "up -d" "$selected_user"
       ;;
     down)
-      compose_for_instances "down" "$selected_user"
+      local down_action="down -v"
+      if keep_volumes_enabled; then
+          down_action="down"
+      fi
+      compose_for_instances "$down_action" "$selected_user"
       ;;
     config)
       generate_env_files
