@@ -1,0 +1,61 @@
+services:
+  node-red:
+    image: "${NODE_RED_IMAGE:?NODE_RED_IMAGE is required}"
+    restart: unless-stopped
+    ports:
+      - "${NODE_RED_PORT:?NODE_RED_PORT is required}:1880"
+      - "${NODE_RED_EXTRA_PORT:?NODE_RED_EXTRA_PORT is required}:1881"
+    environment:
+      TZ: "${TZ:-Europe/Berlin}"
+      USER_NAME: "${USER_NAME:?USER_NAME is required}"
+      USER_PASSWORD: "${USER_PASSWORD:?USER_PASSWORD is required}"
+      NODE_RED_PASSWORD_HASH: "${NODE_RED_PASSWORD_HASH:?NODE_RED_PASSWORD_HASH is required; run ./deploy.sh up}"
+      NODE_RED_CREDENTIAL_SECRET: "${NODE_RED_CREDENTIAL_SECRET:?NODE_RED_CREDENTIAL_SECRET is required}"
+      NODE_RED_HTTP_ADMIN_ROOT: "/${USER_NAME}/node-red/"
+      NODE_RED_HTTP_NODE_ROOT: "/${USER_NAME}/node-red/api"
+      INFLUXDB_HOST: "influxdb"
+      INFLUXDB_PORT: "8086"
+      INFLUXDB_DB: "${INFLUXDB_DB:-db}"
+
+      INFLUXDB_USER: "${INFLUXDB_USER:-db}"
+      INFLUXDB_USER_PASSWORD: "${INFLUXDB_USER_PASSWORD:-db}"
+    volumes:
+      - node_red_data:/data
+      - ./node-red/settings.js:/data/settings.js:ro
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: "${INFLUXDB_IMAGE:?INFLUXDB_IMAGE is required}"
+    restart: unless-stopped
+    environment:
+      INFLUXDB_DB: "${INFLUXDB_DB:-db}"
+      INFLUXDB_HTTP_AUTH_ENABLED: "true"
+      INFLUXDB_ADMIN_USER: "${INFLUXDB_ADMIN_USER:-admin}"
+      INFLUXDB_ADMIN_PASSWORD: "${INFLUXDB_ADMIN_PASSWORD:?INFLUXDB_ADMIN_PASSWORD is required}"
+      INFLUXDB_USER: "${INFLUXDB_USER:-db}"
+
+      INFLUXDB_USER_PASSWORD: "${INFLUXDB_USER_PASSWORD:?INFLUXDB_USER_PASSWORD is required}"
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+
+  grafana:
+    image: "${GRAFANA_IMAGE:?GRAFANA_IMAGE is required}"
+    restart: unless-stopped
+    ports:
+      - "${GRAFANA_PORT:?GRAFANA_PORT is required}:3000"
+    environment:
+
+      GF_SECURITY_ADMIN_USER: "${USER_NAME:?USER_NAME is required}"
+      GF_SECURITY_ADMIN_PASSWORD: "${USER_PASSWORD:?USER_PASSWORD is required}"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+    depends_on:
+      - influxdb
+
+volumes:
+  node_red_data:
+  influxdb_data:
+  grafana_data:
