@@ -7,6 +7,9 @@ INSTANCES_DIR="${INSTANCES_DIR:-instances}"
 
 COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+GEN_SCRIPT="$SCRIPT_DIR/gen_instances_files.py"
+
 
 usage() {
   cat <<'EOF'
@@ -133,7 +136,7 @@ PY
 generate_env_files() {
   require_command "$PYTHON_BIN"
 
-  "$PYTHON_BIN" gen_instances_files.py --csv "$CSV_FILE" --globals "$GLOBALS_FILE" --out-dir "$INSTANCES_DIR"
+  "$PYTHON_BIN" "$GEN_SCRIPT" --csv "$CSV_FILE" --globals "$GLOBALS_FILE" --out-dir "$INSTANCES_DIR"
 }
 
 find_instance_env_files() {
