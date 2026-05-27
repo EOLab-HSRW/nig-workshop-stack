@@ -46,8 +46,9 @@ services:
       GF_SECURITY_ADMIN_USER: "${USER_NAME:?USER_NAME is required}"
       GF_SECURITY_ADMIN_PASSWORD: "${USER_PASSWORD:?USER_PASSWORD is required}"
       GF_USERS_ALLOW_SIGN_UP: "false"
-      GF_SERVER_ROOT_URL: "https://${ROOT_URL}/${USER_NAME}/grafana/"
+      GF_SERVER_ROOT_URL: "http://${ROOT_URL}/${USER_NAME}/grafana/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_SERVER_PROTOCOL: "http"
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
