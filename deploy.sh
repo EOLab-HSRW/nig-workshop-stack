@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-GLOBALS_FILE="${GLOBALS_FILE:-globals.env}"
-INSTANCES_DIR="${INSTANCES_DIR:-instances}"
-
-COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
-PYTHON_BIN="${PYTHON_BIN:-python3}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
+GLOBALS_FILE="${GLOBALS_FILE:-$SCRIPT_DIR/globals.env}"
+INSTANCES_DIR="${INSTANCES_DIR:-$SCRIPT_DIR/instances}"
+
+COMPOSE_FILE="${COMPOSE_FILE:-$SCRIPT_DIR/compose.yml}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 GEN_SCRIPT="$SCRIPT_DIR/gen_instances_files.py"
 CSV_FILE="${CSV_FILE:-${SCRIPT_DIR}/inventory.csv}"
 
