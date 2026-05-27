@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CSV_FILE="${CSV_FILE:-inventory.csv}"
 GLOBALS_FILE="${GLOBALS_FILE:-globals.env}"
 INSTANCES_DIR="${INSTANCES_DIR:-instances}"
 
@@ -9,6 +8,7 @@ COMPOSE_FILE="${COMPOSE_FILE:-compose.yml}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 GEN_SCRIPT="$SCRIPT_DIR/gen_instances_files.py"
+CSV_FILE="${CSV_FILE:-${SCRIPT_DIR}/inventory.csv}"
 
 
 usage() {
