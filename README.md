@@ -78,9 +78,10 @@ Using the example `inventory.csv`:
 
 | Service | URL |
 |---|---|
-| Node-RED | `http://<IP>:17601/student1/node-red/` |
-| Node-RED API | `http://<IP>:17601/student1/node-red/api` |
-| Grafana | `http://<IP>:17701/` |
+| Node-RED | `http://<IP>:<NODE_RED_PORT>/<USER_NAME>/node-red/` |
+| Node-RED API | `http://<IP>:<NODE_RED_PORT>/<USER_NAME>/node-red/api` |
+| Node-RED extra exposed port | `http://<IP>:<NODE_RED_EXTRA_PORT>` |
+| Grafana | `http://<IP>:<GRAFANA_PORT>/<USER_NAME>/grafana` |
 
 Login with the values from `inventory.csv`:
 
